@@ -1,5 +1,7 @@
 package com.thoughtworks.solomonsmines.dao.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +43,28 @@ public class MysqlMineDao implements MinesDao<MinesModel> {
 		}
 
 		return minesModels;
+
+	}
+
+	@Override
+	public List<MinesModel> listMines(String phone) {
+
+		return jdbcTemplate.query("select id, gongsi,lianxiren,tel1, tel2 from HangYe_11 where tel1 like  ? ",
+				new Object[] { phone + "%" }, new RowMapper<MinesModel>() {
+
+					@Override
+					public MinesModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+						MinesModel book = new MinesModel();
+						book.setId((Integer) rs.getInt("id"));
+						book.setGongsi((String) rs.getString("gongsi"));
+						book.setLianxiren((String) rs.getString("lianxiren"));
+						book.setTel1((String) rs.getString("tel1"));
+						book.setTel2((String) rs.getString("tel2"));
+						return book;
+
+					}
+				});
 
 	}
 

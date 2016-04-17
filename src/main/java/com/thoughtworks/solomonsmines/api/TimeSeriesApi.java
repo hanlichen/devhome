@@ -21,10 +21,10 @@ public class TimeSeriesApi {
 	private MinesDao<MinesModel> minesDao;
 
 	@GET
-	public Response get(@QueryParam("type") String type, @QueryParam("start_time") Long startTimeMillis,
+	public Response get(@QueryParam("phone") String phone, @QueryParam("start_time") Long startTimeMillis,
 			@QueryParam("end_time") Long endTimeMillis) {
 
-		return Response.ok().entity(new ListResponseWrapper(minesDao.listMines()).toJson()).build();
+		return Response.ok().entity(new ListResponseWrapper(minesDao.listMines(phone)).toJson()).build();
 	}
 
 }
